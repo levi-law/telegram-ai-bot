@@ -1,0 +1,155 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "telegram-ai-bot"
+version = "1.0.0"
+description = "Professional AI-powered Telegram bot with OpenAI Assistant API integration"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Telegram AI Bot Team", email = "contact@example.com"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Communications :: Chat",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "python-telegram-bot==20.7",
+    "openai==1.3.7",
+    "pydantic==2.5.0",
+    "python-dotenv==1.0.0",
+    "aiofiles==23.2.1",
+    "httpx==0.25.2",
+    "python-json-logger==2.0.7",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==7.4.3",
+    "pytest-asyncio==0.21.1",
+    "pytest-mock==3.12.0",
+    "pytest-cov==4.1.0",
+    "black==23.11.0",
+    "flake8==6.1.0",
+    "mypy==1.7.1",
+    "isort==5.12.0",
+]
+database = [
+    "sqlalchemy==2.0.23",
+    "alembic==1.13.0",
+]
+monitoring = [
+    "prometheus-client==0.19.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/levi-law/telegram-ai-bot"
+Repository = "https://github.com/levi-law/telegram-ai-bot"
+Documentation = "https://github.com/levi-law/telegram-ai-bot/blob/main/README.md"
+"Bug Tracker" = "https://github.com/levi-law/telegram-ai-bot/issues"
+
+[project.scripts]
+telegram-ai-bot = "telegram_ai_bot.core.application:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+telegram_ai_bot = ["assets/**/*", "config/**/*"]
+
+[tool.black]
+line-length = 100
+target-version = ['py39']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 100
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = [
+    "telegram.*",
+    "openai.*",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q --strict-markers --strict-config"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
+asyncio_mode = "auto"
+
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/__pycache__/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+
