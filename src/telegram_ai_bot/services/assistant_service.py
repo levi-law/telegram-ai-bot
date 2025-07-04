@@ -19,7 +19,10 @@ class AssistantService:
     def __init__(self):
         """Initialize the Assistant service."""
         self.settings = get_settings()
-        self.client = OpenAI(api_key=self.settings.openai_api_key)
+        self.client = OpenAI(
+            api_key=self.settings.openai_api_key,
+            default_headers={"OpenAI-Beta": "assistants=v2"}
+        )
         self._assistants_cache: Dict[str, str] = {}  # character_id -> assistant_id
         
     async def get_or_create_assistant(self, character: Character) -> str:

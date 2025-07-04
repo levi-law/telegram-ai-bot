@@ -31,7 +31,8 @@ class TelegramAIBot:
         
         # Initialize services
         self.assistant_service = AssistantService()
-        self.character_service = CharacterService()
+        characters_file = "assets/data/characters.json"
+        self.character_service = CharacterService(characters_file)
         self.user_service = UserService()
         self.conversation_service = ConversationService(self.assistant_service)
         
